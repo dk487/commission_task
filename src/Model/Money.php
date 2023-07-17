@@ -12,6 +12,11 @@ readonly class Money
         string|int|float $amount,
         public Currency $currency,
     ) {
-        $this->amount = bcadd($amount, '0', $currency->getDecimalPoints());
+        $this->amount = bcadd((string) $amount, '0', $currency->getDecimalPoints());
+    }
+
+    public function __toString(): string
+    {
+        return $this->amount . ' ' . $this->currency->value;
     }
 }

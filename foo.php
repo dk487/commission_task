@@ -4,13 +4,13 @@
 declare(strict_types=1);
 
 use DK487\CommissionTask\Model\Currency;
-use DK487\CommissionTask\Model\CurrencyExchangeRate;
 use DK487\CommissionTask\Model\Money;
 use DK487\CommissionTask\Model\Operation;
 use DK487\CommissionTask\Model\Operation\OperationType;
 use DK487\CommissionTask\Model\Operation\UserType;
 use DK487\CommissionTask\Model\UserIdentificator;
 use DK487\CommissionTask\Helper\CurrencyExchangeRateLoader;
+use DK487\CommissionTask\Service\CurrencyConvertor;
 
 require __DIR__ . '/vendor/autoload.php';
 
@@ -35,8 +35,9 @@ $foo = new Operation(
 
 // var_dump($foo);
 
-$bar = CurrencyExchangeRateLoader::loadJson('var/currency-exchange-rates.json');
+$bar = new CurrencyConvertor(
+    CurrencyExchangeRateLoader::loadJson('var/currency-exchange-rates.json')
+);
 
-$quux = $bar->getCurrencyExchangeRate(Currency::USD, Currency::JPY);
-
-var_dump($quux);
+$x = new Money(100, Currency::USD);
+echo $x . ' equals to ' . $bar->convert($x, Currency::EUR) . PHP_EOL;
