@@ -10,7 +10,7 @@ use DK487\CommissionTask\Model\Operation;
 use DK487\CommissionTask\Model\Operation\OperationType;
 use DK487\CommissionTask\Model\Operation\UserType;
 use DK487\CommissionTask\Model\UserIdentificator;
-use DK487\CommissionTask\Util\CurrencyExchangeRates;
+use DK487\CommissionTask\Helper\CurrencyExchangeRateLoader;
 
 require __DIR__ . '/vendor/autoload.php';
 
@@ -35,13 +35,7 @@ $foo = new Operation(
 
 // var_dump($foo);
 
-$bar = new CurrencyExchangeRates(
-    Currency::EUR,
-    new CurrencyExchangeRate(Currency::EUR, Currency::USD, 1.1497),
-    new CurrencyExchangeRate(Currency::EUR, Currency::JPY, 129.53),
-);
-
-// var_dump($bar);
+$bar = CurrencyExchangeRateLoader::loadJson('var/currency-exchange-rates.json');
 
 $quux = $bar->getCurrencyExchangeRate(Currency::USD, Currency::JPY);
 

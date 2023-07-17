@@ -7,7 +7,7 @@ namespace DK487\CommissionTask\Util;
 use DK487\CommissionTask\Model\Currency;
 use DK487\CommissionTask\Model\CurrencyExchangeRate;
 
-class CurrencyExchangeRates
+readonly class CurrencyExchangeRates
 {
     private array $exchangeRates;
 
@@ -18,11 +18,6 @@ class CurrencyExchangeRates
         CurrencyExchangeRate ...$exchangeRates
     ) {
         $this->exchangeRates = $exchangeRates;
-    }
-
-    public function addCurrencyExchangeRate(CurrencyExchangeRate $exchangeRate)
-    {
-        $this->exchangeRates[] = $exchangeRate;
     }
 
     private function getInvertedRate(
