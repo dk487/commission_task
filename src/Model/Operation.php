@@ -8,10 +8,10 @@ readonly class Operation
 {
     public function __construct(
         public \DateTimeInterface $date,
-        public int $userIdentificator,
+        public UserIdentificator $user,
         public Operation\UserType $userType,
         public Operation\OperationType $operationType,
-        public Money $amount
+        public Money $amount,
     ) {
     }
 }
