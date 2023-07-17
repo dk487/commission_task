@@ -13,7 +13,7 @@ class CurrencyExchangeRateLoader
     public static function loadJson(string $fileName): CurrencyExchangeRates
     {
         $fileContents = file_get_contents($fileName);
-        $json = json_decode($fileContents, TRUE);
+        $json = json_decode($fileContents, true);
 
         $baseCurrency = Currency::from($json['base']);
         $exchangeRates = [];

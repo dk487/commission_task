@@ -24,7 +24,7 @@ readonly class CurrencyConvertor
             $sourceMoney->currency,
             $targetCurrency,
         );
-        
+
         $targetAmount = BcMath::multiply(
             $sourceMoney->amount,
             $exchangeRate->rate,
