@@ -11,7 +11,7 @@ readonly class Operation
         public UserIdentificator $user,
         public Operation\UserType $userType,
         public Operation\OperationType $operationType,
-        public Money $amount,
+        public Money $money,
     ) {
     }
 }

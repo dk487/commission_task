@@ -14,7 +14,7 @@ readonly class CurrencyExchangeRates
     private const ERROR_NOT_FOUND = 'Currency exchange rate for %s/%s not found';
 
     public function __construct(
-        private Currency $baseCurrency,
+        readonly public Currency $baseCurrency,
         CurrencyExchangeRate ...$exchangeRates
     ) {
         $this->exchangeRates = $exchangeRates;

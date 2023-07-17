@@ -13,7 +13,7 @@ use DK487\CommissionTask\Model\UserIdentificator;
 
 class CsvOperationsParser
 {
-    public static function parseLine(string $csvLine): Operation 
+    public static function parseLine(string $csvLine): Operation
     {
         $csv = str_getcsv($csvLine);
 
@@ -25,7 +25,7 @@ class CsvOperationsParser
             $amount,
             $currency,
         ] = $csv;
-        
+
         return new Operation(
             new \DateTimeImmutable($date),
             new UserIdentificator((int) $uid),
@@ -36,6 +36,5 @@ class CsvOperationsParser
                 Currency::from($currency)
             )
         );
-        
     }
 }
