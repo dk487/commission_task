@@ -6,7 +6,6 @@ namespace DK487\CommissionTask\Service;
 
 use DK487\CommissionTask\Model\Currency;
 use DK487\CommissionTask\Model\Money;
-use DK487\CommissionTask\Util\BcMath;
 use DK487\CommissionTask\Util\CurrencyExchangeRates;
 
 readonly class CurrencyConvertor
@@ -25,9 +24,9 @@ readonly class CurrencyConvertor
             $targetCurrency,
         );
 
-        $targetAmount = BcMath::multiply(
-            $sourceMoney->amount,
-            $exchangeRate->rate,
+        $targetAmount = bcmul(
+            (string) $sourceMoney->amount,
+            (string) $exchangeRate->rate,
             $targetCurrency->getDecimalPoints(),
         );
 
