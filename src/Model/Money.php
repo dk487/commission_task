@@ -6,9 +6,12 @@ namespace DK487\CommissionTask\Model;
 
 readonly class Money
 {
+    public string $amount;
+
     public function __construct(
-        public string $amount,
-        public Currency $currency
+        string|int|float $amount,
+        public Currency $currency,
     ) {
+        $this->amount = bcadd($amount, '0', $currency->getDecimalPoints());
     }
 }
