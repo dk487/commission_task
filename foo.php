@@ -14,14 +14,19 @@ require __DIR__ . '/vendor/autoload.php';
 // CSV line:
 // 2014-12-31,4,private,withdraw,1200.00,EUR
 
+$csvLine = '2014-12-31,4,private,withdraw,1200.00,EUR';
+$csv = str_getcsv($csvLine);
+
+[$date,$uid,$userType,$operationType,$amount,$currency] = $csv;
+
 $foo = new Operation(
-    new \DateTimeImmutable('2014-12-31 UTC'),
-    4,
-    UserType::Private,
-    OperationType::Withdraw,
+    new \DateTimeImmutable($date),
+    (int) $uid,
+    UserType::from($userType),
+    OperationType::from($operationType),
     new Money(
-        '1200.00',
-        Currency::EUR
+        $amount,
+        Currency::from($currency)
     )
 );
 
