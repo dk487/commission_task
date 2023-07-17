@@ -64,6 +64,7 @@ class CommissionFeeAppTest extends TestCase
 0.00
 0.00
 8612
+
 OUTPUT;
 
         $this->expectOutputString($expectedOutput);

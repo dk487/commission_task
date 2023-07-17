@@ -36,7 +36,7 @@ class CurrencyExchangeRatesTest extends TestCase
         $this->assertEqualsWithDelta($expectedRate, $exchangeRate->rate, self::EQUAL_FLOAT_DELTA);
     }
 
-    public function getSampleExchangeRates(): array
+    public static function getSampleExchangeRates(): array
     {
         return [
             [Currency::EUR, Currency::EUR, 1],

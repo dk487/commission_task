@@ -33,38 +33,44 @@ class CommissionFeeCalculator
 
     private function getCommissionBaseRate(Operation $operation): float
     {
-        if ($operation->operationType == OperationType::Deposit) {
+        if (OperationType::Deposit == $operation->operationType) {
             return self::COMMISSION_RATE_DEPOSIT;
         }
- 
-        if ($operation->userType == UserType::Business) {
+
+        if (UserType::Business == $operation->userType) {
             return self::COMMISSION_RATE_WITHDRAW_BUSINESS;
         }
-        
+
         return self::COMMISSION_RATE_WITHDRAW_PRIVATE;
-    } 
+    }
 
     public function getCommissionFee(Operation $operation): Money
     {
-        $correctedAmount = $operation->money->amount;
+        $applicableMoney = $operation->money;
         $commissionRate = $this->getCommissionBaseRate($operation);
 
-        // TODO: apply 3 free operations
-        // TODO: apply 1000 EUR rule
+        if (UserType::Private == $operation->userType
+            && OperationType::Withdraw == $operation->operationType) {
+            $previousOperations = iterator_to_array($this->operationRepository->findSameWeek($operation));
 
-        $amountWithoutComissionRoundedDown = bcmul(
-            $correctedAmount,
-            (string) (1 - $commissionRate),
-            $operation->money->currency->getDecimalPoints(),
-        );
+            if (count($previousOperations) < self::WITHDRAW_PRIVATE_FREE_OPERATIONS_PER_WEEK) {
+                // How much we can withdraw for free?
+                $maxExemption = $this->withdrawPrivateFree;
+                foreach ($previousOperations as $previousOperation) {
+                    $maxExemption = $this->currencyConvertor->sub($maxExemption, $previousOperation->money);
+                }
+                $maxExemption = $this->currencyConvertor->minZero($maxExemption);
 
-        $commissionAmountRoundedUp = bcsub(
-            $correctedAmount,
-            $amountWithoutComissionRoundedDown,
-            $operation->money->currency->getDecimalPoints(),
-        );
+                // How much is the amount where commission is applicable?
+                $applicableMoney = $this->currencyConvertor->sub($applicableMoney, $maxExemption);
+                $applicableMoney = $this->currencyConvertor->minZero($applicableMoney);
+            }
+        }
 
-        return new Money($commissionAmountRoundedUp, $operation->money->currency);
+        $moneyWithoutComission = $this->currencyConvertor->mul($applicableMoney, 1 - $commissionRate);
+        $commissionRoundedUp = $this->currencyConvertor->sub($applicableMoney, $moneyWithoutComission);
+
+        return $commissionRoundedUp;
     }
 
     public function addOperation(Operation $operation): void
