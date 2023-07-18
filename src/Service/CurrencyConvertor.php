@@ -11,7 +11,7 @@ use DK487\CommissionTask\Util\CurrencyExchangeRates;
 readonly class CurrencyConvertor
 {
     public function __construct(
-        readonly public CurrencyExchangeRates $currencyExchangeRates,
+        public CurrencyExchangeRates $currencyExchangeRates,
     ) {
     }
 
