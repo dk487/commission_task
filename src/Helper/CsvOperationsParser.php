@@ -13,8 +13,14 @@ use DK487\CommissionTask\Model\UserIdentificator;
 
 class CsvOperationsParser
 {
+    private const VALID_LINE_RE = '/^\d{4}\-\d{2}-\d{2}\,\d+,(private|business)\,(withdraw|deposit)\,\d+.?\d*\,[A-Z]{3}\s*$/';
+
     public static function parseLine(string $csvLine): Operation
     {
+        if (!preg_match(self::VALID_LINE_RE, $csvLine)) {
+            throw new \RuntimeException('Incorrect input file format: ' . trim($csvLine));
+        }
+
         $csv = str_getcsv($csvLine);
 
         [
